@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    container_name: guild
+    ports:
+      - "8885:8885"
+    restart: unless-stopped
