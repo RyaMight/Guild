@@ -77,14 +77,17 @@ def changepasswd(Hash):
             email = query.email
             query1 = User.query.filter_by(email=email).first()
             new_password = request.form.get("password")
-            query1.password = generate_password_hash(new_password, method="sha256")
+            query1.password = generate_password_hash(new_password)
             db.session.commit()
             db.session.delete(query)
             db.session.commit()
             flash("Password Updated!",category="success")
-            redirect(url_for("views.home"))
+            return redirect(url_for("views.home"))
             
         return render_template("resetpassword.html", user=current_user, email=query.email)
+
+    flash("Invalid or expired reset link!", category="error")
+    return redirect(url_for("views.home"))
 
 
 @views.route("/forgetpassword", methods=["GET", "POST"])
